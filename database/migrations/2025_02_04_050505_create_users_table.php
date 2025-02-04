@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->enum('role', ['user', 'supervisor', 'auditor', 'admin']);
+            $table->foreignId('group_id')->nullable()->constrained('groups');
+            $table->foreignId('client_id')->nullable()->constrained('clients');
+            $table->string('profile_image')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
