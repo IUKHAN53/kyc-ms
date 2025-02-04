@@ -7,13 +7,19 @@ use App\Http\Controllers\Supervisor\SupervisorDashboardController;
 use App\Http\Controllers\User\UserDashboardController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/bypass/{role}', function ($role) {
+    $user = \App\Models\User::query()->where('role', $role)->first();
+
+    auth()->login($user);
+
+    return redirect(redirectToDashboard($user));
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
+    Route::get('/', function () {
+        $user = auth()->user();
+
+        return redirect(redirectToDashboard($user));
     })->name('dashboard');
 
     Route::middleware('role:admin')->group(function () {
@@ -36,7 +42,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             ->name('user.dashboard');
     });
 });
-
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -10,7 +10,7 @@ if (! function_exists('redirectToDashboard')) {
         } elseif ($user->role === 'auditor') {
             return route('auditor.dashboard');
         }
+
         return route('user.dashboard');
     }
 }
-

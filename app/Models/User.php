@@ -11,7 +11,7 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
-    use Notifiable, HasFactory, Notifiable;
+    use HasFactory, Notifiable, Notifiable;
 
     protected $fillable = [
         'name', 'email', 'password', 'role', 'group_id', 'client_id', 'profile_image',
@@ -49,5 +49,4 @@ class User extends Authenticatable
     {
         return $this->hasMany(Audit::class, 'auditor_id');
     }
-
 }
