@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>@yield('page-title')</title>
+    <title>@yield('page-title', 'KYC Management System')</title>
     <link href="{{asset('assets/css/bootstrap.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/css/style.css')}}" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,6 +13,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    @stack('styles')
 </head>
 <body class="bg">
 <header id="header">
@@ -55,25 +56,75 @@
 <section id="dashobard">
     <div class="sidebar d-flex flex-column" id="sidebar">
         <ul class="nav nav-das flex-column">
-            <li class="nav-item">
-                <a href="{{route('dashboard')}}" class="nav-link active">
-                    <img src="{{asset('assets/img/home.png')}}" alt="">
-                    <span>Dashboard</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="conversion.html" class="nav-link">
-                    <img src="{{asset('assets/img/layout.png')}}" alt=""> <span>Minhas
-                        Conversões</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="#" class="nav-link green" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
-                   aria-controls="offcanvasRight">
-                    <img src="{{asset('assets/img/message.png')}}" alt="">
-                    <span>Cadastrar Conversões</span>
-                </a>
-            </li>
+            @if(isAdmin())
+                <li class="nav-item">
+                    <a href="{{route('admin.dashboard')}}" class="nav-link {{isActiveRoute('admin.dashboard')}}">
+                        <img src="{{asset('assets/img/home.png')}}" alt="">
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.groups.index')}}" class="nav-link {{isActiveRoute('admin.groups.index')}}">
+                        <i class="bi-collection" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Groups</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.clients.index')}}"
+                       class="nav-link {{isActiveRoute('admin.clients.index')}}">
+                        <i class="bi-person-rolodex" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Clients</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.agents.index')}}" class="nav-link {{isActiveRoute('admin.agents.index')}}">
+                        <i class="bi-people" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Agents</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.supervisors.index')}}"
+                       class="nav-link {{isActiveRoute('admin.supervisors.index')}}">
+                        <i class="bi-person" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Supervisors</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{route('admin.auditors.index')}}"
+                       class="nav-link {{isActiveRoute('admin.auditors.index')}}">
+                        <i class="bi-person-badge" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Auditors</span>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{route('admin.sales.index')}}"
+                       class="nav-link {{isActiveRoute('admin.sales.index')}}">
+                        <i class="bi-receipt-cutoff" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Conversions</span>
+                    </a>
+                </li>
+            @else
+                <li class="nav-item">
+                    <a href="{{route('dashboard')}}" class="nav-link {{isActiveRoute('dashboard')}}">
+                        <img src="{{asset('assets/img/home.png')}}" alt="">
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="conversion.html" class="nav-link">
+                        <i class="bi-alarm" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Minhas Conversões</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#" class="nav-link green" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight"
+                       aria-controls="offcanvasRight">
+                        <i class="bi-alarm" style="font-size: 1.5rem; font-weight: bolder"></i>
+                        <span>Cadastrar Conversões</span>
+                    </a>
+                </li>
+            @endif
         </ul>
         <ul class="nav nav-bottom">
             <li class="nav-item">
@@ -85,10 +136,13 @@
                 </button>
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link">
-                    <img src="{{asset('assets/img/log-out.png')}}" alt="">
-                    <span>Sair</span>
-                </a>
+                <form action="{{ route('logout') }}" method="POST" class="d-inline">
+                    @csrf
+                    <button type="submit" class="nav-link border-0 bg-transparent">
+                        <img src="{{ asset('assets/img/log-out.png') }}" alt="">
+                        <span>Sair</span>
+                    </button>
+                </form>
             </li>
         </ul>
     </div>
@@ -153,6 +207,7 @@
     </div>
 </div>
 
+@stack('scripts')
 
 <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

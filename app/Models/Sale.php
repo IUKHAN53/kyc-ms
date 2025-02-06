@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class Sale extends Model
 {
     protected $fillable = [
-        'user_id', 'group_id', 'client_id', 'auditor_id', 'status', 'description',
+        'user_id', 'group_id', 'client_id', 'auditor_id', 'status', 'description', 'jira_id', 'jira_status', 'backoffice_id', 'date', 'hour', 'bonus', 'voucher_image',
     ];
 
     public function user(): BelongsTo

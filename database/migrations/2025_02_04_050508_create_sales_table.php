@@ -17,6 +17,13 @@ return new class extends Migration
             $table->foreignId('group_id');
             $table->foreignId('client_id');
             $table->foreignId('auditor_id')->nullable();
+            $table->string('jira_id');
+            $table->string('jira_status');
+            $table->string('backoffice_id');
+            $table->date('date');
+            $table->string('hour');
+            $table->string('bonus');
+            $table->string('voucher_image');
             $table->enum('status', ['pending', 'approved', 'rejected'])->default('pending');
             $table->text('description')->nullable();
             $table->timestamps();

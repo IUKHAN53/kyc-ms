@@ -1,6 +1,13 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\SupervisorController;
+use App\Http\Controllers\Admin\AuditorController;
+use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\ConversionController;
+use App\Http\Controllers\Admin\TeamController;
+use App\Http\Controllers\Admin\GroupController;
 use App\Http\Controllers\Auditor\AuditorDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Supervisor\SupervisorDashboardController;
@@ -18,13 +25,30 @@ Route::get('/bypass/{role}', function ($role) {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
         $user = auth()->user();
-
         return redirect(redirectToDashboard($user));
     })->name('dashboard');
 
-    Route::middleware('role:admin')->group(function () {
-        Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])
-            ->name('admin.dashboard');
+    Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
+        Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+        // groups
+        Route::resource('/groups', GroupController::class);
+
+        // users
+        Route::resource('agents', UserController::class);
+
+        // Supervisors
+         Route::resource('supervisors', SupervisorController::class);
+
+        // Auditors
+         Route::resource('auditors', AuditorController::class);
+
+        // Clients
+        Route::resource('clients', ClientController::class);
+
+        // Conversions
+         Route::resource('sales', ConversionController::class);
+
     });
 
     Route::middleware('role:supervisor')->group(function () {
@@ -49,4 +73,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
