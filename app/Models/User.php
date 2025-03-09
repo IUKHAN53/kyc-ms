@@ -49,4 +49,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Audit::class, 'auditor_id');
     }
+
+    public function getAvatarAttribute()
+    {
+        return $this->profile_image ? asset('storage/'.$this->profile_image) : asset('assets/img/user2.png');
+    }
+
+    public function teams()
+    {
+        return $this->belongsToMany(Team::class, 'team_user');
+    }
 }

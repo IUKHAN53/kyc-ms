@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Traits\ManagesUsers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\Traits\ManagesUsers;
 
 class SupervisorController extends Controller
 {
@@ -18,6 +18,7 @@ class SupervisorController extends Controller
     {
         $supervisors = User::where('role', 'supervisor')->paginate(10);
         $groups = \App\Models\Group::all();
+
         return view('admin.supervisors.index', compact('supervisors', 'groups'));
     }
 

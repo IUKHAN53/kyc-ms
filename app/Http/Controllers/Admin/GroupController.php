@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Group;
+use Illuminate\Http\Request;
 
 class GroupController extends Controller
 {
@@ -40,6 +40,7 @@ class GroupController extends Controller
         ]);
 
         $group->update($validatedData);
+
         return redirect()->route('admin.groups.index')
             ->with('success', 'Grupo atualizado com sucesso.');
     }

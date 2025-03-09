@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Admin\Traits\ManagesUsers;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Admin\Traits\ManagesUsers;
 
 class AuditorController extends Controller
 {
@@ -17,6 +17,7 @@ class AuditorController extends Controller
     public function index()
     {
         $auditors = User::where('role', 'auditor')->paginate(10);
+
         return view('admin.auditors.index', compact('auditors'));
     }
 

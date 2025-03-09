@@ -7,7 +7,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Client extends Model
 {
-    protected $fillable = ['name', 'image'];
+    protected $fillable = [
+        'name',
+        'image',
+        'conversion_value',
+    ];
 
     public function users(): HasMany
     {
@@ -17,5 +21,12 @@ class Client extends Model
     public function sales(): HasMany
     {
         return $this->hasMany(Sale::class);
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image
+            ? asset('storage/'.$this->image)
+            : asset('assets/img/Logo-Bet.jpg'); // fallback image
     }
 }

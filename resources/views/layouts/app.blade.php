@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     @stack('styles')
+    @livewireStyles
 </head>
 <body class="bg">
 <header id="header">
@@ -46,7 +47,7 @@
                     </div>
                     <div class="ds-user">
                         <a href="profile.html" class="user">
-                            <img src="{{asset('assets/img/user2.png')}}" alt="" class="img-fluid"></a>
+                            <img src="{{auth()->user()->avatar}}" alt="" class="img-fluid rounded-full"></a>
                     </div>
                 </div>
             </div>
@@ -128,7 +129,7 @@
         </ul>
         <ul class="nav nav-bottom">
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="{{route('admin.configs.profile')}}" class="nav-link {{isActiveRoute('admin.configs.*')}}">
                     <img src="{{asset('assets/img/setting.png')}}" alt="">
                     <span>Configurações</span></a>
                 <button class="btn-nav" id="toggleSidebar">
@@ -208,10 +209,10 @@
 </div>
 
 @stack('scripts')
-
 <script src="{{asset('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="{{asset('assets/js/script.js')}}"></script>
+@livewireScripts
+
 </body>
 
 </html>

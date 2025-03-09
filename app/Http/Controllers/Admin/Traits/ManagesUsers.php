@@ -12,19 +12,18 @@ trait ManagesUsers
     /**
      * Store a new user with the given role.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string  $role          The role to assign (e.g., 'user', 'supervisor').
-     * @param  string  $storageFolder The folder name (on the public disk) where the profile image will be stored.
-     * @param  array   $extraRules    Additional validation rules (e.g. for group_id, client_id).
-     * @param  array   $extraData     Extra data to merge into the validated data (optional).
+     * @param  string  $role  The role to assign (e.g., 'user', 'supervisor').
+     * @param  string  $storageFolder  The folder name (on the public disk) where the profile image will be stored.
+     * @param  array  $extraRules  Additional validation rules (e.g. for group_id, client_id).
+     * @param  array  $extraData  Extra data to merge into the validated data (optional).
      * @return \Illuminate\Http\RedirectResponse
      */
     public function storeUser(Request $request, $role, $storageFolder, array $extraRules = [], array $extraData = [])
     {
         $baseRules = [
-            'name'          => 'required|string|max:255',
-            'email'         => 'required|email|unique:users,email',
-            'password'      => 'required|string|min:6|confirmed',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:6|confirmed',
             'profile_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
         $rules = array_merge($baseRules, $extraRules);
@@ -42,25 +41,24 @@ trait ManagesUsers
 
         \App\Models\User::create($validatedData);
 
-        return redirect()->back()->with('success', ucfirst($role) . ' criado com sucesso.');
+        return redirect()->back()->with('success', ucfirst($role).' criado com sucesso.');
     }
 
     /**
      * Update an existing user with the given role.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  mixed  $user          The user model instance.
-     * @param  string $role           Expected role of the user.
-     * @param  string $storageFolder  Folder name for storing profile images.
-     * @param  array  $extraRules     Additional validation rules.
-     * @param  array  $extraData      Extra data to merge (optional).
+     * @param  mixed  $user  The user model instance.
+     * @param  string  $role  Expected role of the user.
+     * @param  string  $storageFolder  Folder name for storing profile images.
+     * @param  array  $extraRules  Additional validation rules.
+     * @param  array  $extraData  Extra data to merge (optional).
      * @return \Illuminate\Http\RedirectResponse
      */
     public function updateUser(Request $request, $user, $role, $storageFolder, array $extraRules = [], array $extraData = [])
     {
         $baseRules = [
-            'name'          => 'required|string|max:255',
-            'email'         => ['required', 'email', Rule::unique('users')->ignore($user->id)],
+            'name' => 'required|string|max:255',
+            'email' => ['required', 'email', Rule::unique('users')->ignore($user->id)],
             'profile_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
 
@@ -90,14 +88,14 @@ trait ManagesUsers
 
         $user->update($validatedData);
 
-        return redirect()->back()->with('success', ucfirst($role) . ' atualizado com sucesso.');
+        return redirect()->back()->with('success', ucfirst($role).' atualizado com sucesso.');
     }
 
     /**
      * Delete the given user if they have the expected role.
      *
-     * @param  mixed  $user The user model instance.
-     * @param  string $role Expected role.
+     * @param  mixed  $user  The user model instance.
+     * @param  string  $role  Expected role.
      * @return \Illuminate\Http\RedirectResponse
      */
     public function destroyUser($user, $role)
@@ -108,6 +106,6 @@ trait ManagesUsers
 
         $user->delete();
 
-        return redirect()->back()->with('success', ucfirst($role) . ' removido com sucesso.');
+        return redirect()->back()->with('success', ucfirst($role).' removido com sucesso.');
     }
 }

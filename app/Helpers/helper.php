@@ -56,4 +56,3 @@ if (! function_exists('isActiveRoute')) {
         return request()->routeIs($route) ? 'active' : '';
     }
 }
-

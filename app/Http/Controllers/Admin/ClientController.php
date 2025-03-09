@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Client;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class ClientController extends Controller
@@ -16,6 +16,7 @@ class ClientController extends Controller
     {
         // You can use paginate() if you expect many clients.
         $clients = Client::paginate(10);
+
         return view('admin.clients.index', compact('clients'));
     }
 
@@ -25,7 +26,7 @@ class ClientController extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -38,7 +39,7 @@ class ClientController extends Controller
         Client::create($validatedData);
 
         return redirect()->route('admin.clients.index')
-                         ->with('success', 'Client created successfully.');
+            ->with('success', 'Client created successfully.');
     }
 
     /**
@@ -47,7 +48,7 @@ class ClientController extends Controller
     public function update(Request $request, Client $client)
     {
         $validatedData = $request->validate([
-            'name'  => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
         if ($request->hasFile('image')) {
@@ -64,7 +65,7 @@ class ClientController extends Controller
         $client->update($validatedData);
 
         return redirect()->route('admin.clients.index')
-                         ->with('success', 'Client updated successfully.');
+            ->with('success', 'Client updated successfully.');
     }
 
     /**
@@ -79,6 +80,6 @@ class ClientController extends Controller
         $client->delete();
 
         return redirect()->route('admin.clients.index')
-                         ->with('success', 'Client deleted successfully.');
+            ->with('success', 'Client deleted successfully.');
     }
 }

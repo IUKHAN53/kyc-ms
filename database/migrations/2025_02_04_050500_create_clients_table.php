@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('image')->nullable();
+            $table->decimal('conversion_value', 10, 2)->nullable();
             $table->timestamps();
         });
     }

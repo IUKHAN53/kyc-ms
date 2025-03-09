@@ -17,6 +17,7 @@ class ConversionController extends Controller
         $sales = Sale::with(['client', 'group', 'user', 'auditor'])->paginate(10);
         $clients = \App\Models\Client::all();
         $groups = \App\Models\Group::all();
+
         return view('admin.sales.index', compact('sales', 'clients', 'groups'));
     }
 
@@ -26,17 +27,17 @@ class ConversionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'client_id'      => 'required|exists:clients,id',
-            'group_id'      => 'required|exists:groups,id',
-            'jira_status'    => 'required|string',
-            'jira_id'        => 'required|string',
-            'backoffice_id'  => 'required|string',
-            'date'           => 'required|date',
-            'hour'           => 'required|string',
-            'bonus'          => 'required|string',
-            'voucher_image'  => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status'         => 'required|in:pending,approved,rejected',
-            'description'    => 'nullable|string',
+            'client_id' => 'required|exists:clients,id',
+            'group_id' => 'required|exists:groups,id',
+            'jira_status' => 'required|string',
+            'jira_id' => 'required|string',
+            'backoffice_id' => 'required|string',
+            'date' => 'required|date',
+            'hour' => 'required|string',
+            'bonus' => 'required|string',
+            'voucher_image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|in:pending,approved,rejected',
+            'description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('voucher_image')) {
@@ -57,17 +58,17 @@ class ConversionController extends Controller
     public function update(Request $request, Sale $sale)
     {
         $validated = $request->validate([
-            'client_id'      => 'required|exists:clients,id',
-            'group_id'      => 'required|exists:groups,id',
-            'jira_status'    => 'required|string',
-            'jira_id'        => 'required|string',
-            'backoffice_id'  => 'required|string',
-            'date'           => 'required|date',
-            'hour'           => 'required|string',
-            'bonus'          => 'required|string',
-            'voucher_image'  => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'status'         => 'required|in:pending,approved,rejected',
-            'description'    => 'nullable|string',
+            'client_id' => 'required|exists:clients,id',
+            'group_id' => 'required|exists:groups,id',
+            'jira_status' => 'required|string',
+            'jira_id' => 'required|string',
+            'backoffice_id' => 'required|string',
+            'date' => 'required|date',
+            'hour' => 'required|string',
+            'bonus' => 'required|string',
+            'voucher_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'status' => 'required|in:pending,approved,rejected',
+            'description' => 'nullable|string',
         ]);
 
         if ($request->hasFile('voucher_image')) {

@@ -1,17 +1,20 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Admin\SupervisorController;
 use App\Http\Controllers\Admin\AuditorController;
 use App\Http\Controllers\Admin\ClientController;
 use App\Http\Controllers\Admin\ConversionController;
-use App\Http\Controllers\Admin\TeamController;
 use App\Http\Controllers\Admin\GroupController;
+use App\Http\Controllers\Admin\SupervisorController;
+use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auditor\AuditorDashboardController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Supervisor\SupervisorDashboardController;
 use App\Http\Controllers\User\UserDashboardController;
+use App\Livewire\Admin\Configurations\ClientsComponent;
+use App\Livewire\Admin\Configurations\Profile;
+use App\Livewire\Admin\Configurations\TeamsComponent;
+use App\Livewire\Admin\Configurations\Users;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/bypass/{role}', function ($role) {
@@ -25,6 +28,7 @@ Route::get('/bypass/{role}', function ($role) {
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/', function () {
         $user = auth()->user();
+
         return redirect(redirectToDashboard($user));
     })->name('dashboard');
 
@@ -38,16 +42,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::resource('agents', UserController::class);
 
         // Supervisors
-         Route::resource('supervisors', SupervisorController::class);
+        Route::resource('supervisors', SupervisorController::class);
 
         // Auditors
-         Route::resource('auditors', AuditorController::class);
+        Route::resource('auditors', AuditorController::class);
 
         // Clients
         Route::resource('clients', ClientController::class);
 
         // Conversions
-         Route::resource('sales', ConversionController::class);
+        Route::resource('sales', ConversionController::class);
+        // Livewire Routes
+        Route::get('/admin/config/profile', Profile::class)->name('configs.profile');
+        Route::get('/admin/config/clients', ClientsComponent::class)->name('configs.clients');
+        Route::get('/admin/config/users', Users::class)->name('configs.users');
+        Route::get('/admin/config/teams', TeamsComponent::class)->name('configs.teams');
 
     });
 
@@ -73,4 +82,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
