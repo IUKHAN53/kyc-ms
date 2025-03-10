@@ -1,14 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboardController;
-use App\Http\Controllers\Admin\AuditorController;
-use App\Http\Controllers\Admin\ClientController;
+use App\Http\Controllers\Admin\AdminReportsController;
 use App\Http\Controllers\Admin\ConversionController;
-use App\Http\Controllers\Admin\GroupController;
-use App\Http\Controllers\Admin\SupervisorController;
-use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auditor\AuditorDashboardController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Supervisor\SupervisorDashboardController;
 use App\Http\Controllers\User\UserDashboardController;
 use App\Livewire\Admin\Configurations\ClientsComponent;
@@ -34,52 +29,49 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('role:admin')->prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
-
-        // groups
-        Route::resource('/groups', GroupController::class);
-
-        // users
-        Route::resource('agents', UserController::class);
-
-        // Supervisors
-        Route::resource('supervisors', SupervisorController::class);
-
-        // Auditors
-        Route::resource('auditors', AuditorController::class);
-
-        // Clients
-        Route::resource('clients', ClientController::class);
-
-        // Conversions
+        Route::get('/reports', [AdminReportsController::class, 'index'])->name('reports.index');
         Route::resource('sales', ConversionController::class);
+
         // Livewire Routes
-        Route::get('/admin/config/profile', Profile::class)->name('configs.profile');
-        Route::get('/admin/config/clients', ClientsComponent::class)->name('configs.clients');
-        Route::get('/admin/config/users', Users::class)->name('configs.users');
-        Route::get('/admin/config/teams', TeamsComponent::class)->name('configs.teams');
+        Route::get('/config/profile', Profile::class)->name('configs.profile');
+        Route::get('/config/clients', ClientsComponent::class)->name('configs.clients');
+        Route::get('/config/users', Users::class)->name('configs.users');
+        Route::get('/config/teams', TeamsComponent::class)->name('configs.teams');
 
     });
 
-    Route::middleware('role:supervisor')->group(function () {
-        Route::get('/supervisor/dashboard', [SupervisorDashboardController::class, 'index'])
-            ->name('supervisor.dashboard');
+    Route::middleware('role:supervisor')->prefix('auditor')->name('supervisor.')->group(function () {
+        Route::get('/dashboard', [SupervisorDashboardController::class, 'index'])
+            ->name('dashboard');
+        Route::get('/conversions', [SupervisorDashboardController::class, 'conversions'])
+            ->name('conversions');
+        Route::post('/change-status/{sale}', [SupervisorDashboardController::class, 'changeStatus'])
+            ->name('changeStatus');
+        Route::get('/reports', [SupervisorDashboardController::class, 'reports'])->name('reports');
+        Route::get('/profile', \App\Livewire\Supervisor\Profile::class)->name('profile');
+        Route::get('/users', \App\Livewire\Supervisor\Users::class)->name('users');
+        Route::get('/teams', \App\Livewire\Supervisor\Teams::class)->name('teams');
     });
 
-    Route::middleware('role:auditor')->group(function () {
-        Route::get('/auditor/dashboard', [AuditorDashboardController::class, 'index'])
-            ->name('auditor.dashboard');
+    Route::middleware('role:auditor')->prefix('auditor')->name('auditor.')->group(function () {
+        Route::get('/dashboard', [AuditorDashboardController::class, 'index'])
+            ->name('dashboard');
+        Route::get('/conversions', [AuditorDashboardController::class, 'conversions'])
+            ->name('conversions');
+        Route::post('/change-status/{sale}', [AuditorDashboardController::class, 'changeStatus'])
+            ->name('changeStatus');
+        Route::get('/profile', \App\Livewire\Auditor\Profile::class)->name('profile');
     });
 
-    Route::middleware('role:user')->group(function () {
-        Route::get('/user/dashboard', [UserDashboardController::class, 'index'])
-            ->name('user.dashboard');
+    Route::middleware('role:user')->prefix('user')->name('user.')->group(function () {
+        Route::get('dashboard', [UserDashboardController::class, 'index'])
+            ->name('dashboard');
+        Route::get('/conversions', [UserDashboardController::class, 'conversions'])
+            ->name('conversions');
+        Route::POST('/conversion/store', [UserDashboardController::class, 'storeSale'])
+            ->name('conversions.store');
+        Route::get('/profile', \App\Livewire\User\Profile::class)->name('profile');
     });
-});
-
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
 require __DIR__.'/auth.php';

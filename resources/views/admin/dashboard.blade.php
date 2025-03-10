@@ -101,5 +101,4 @@
             </div>
         </div>
     </div>
-    <script src="{{asset('assets/js/script.js')}}"></script>
 </x-app-layout>

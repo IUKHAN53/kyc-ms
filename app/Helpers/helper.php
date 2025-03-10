@@ -56,3 +56,93 @@ if (! function_exists('isActiveRoute')) {
         return request()->routeIs($route) ? 'active' : '';
     }
 }
+if (! function_exists('getMenu')) {
+    function getMenu(): array
+    {
+        $navItems = [];
+        if (isAdmin()) {
+            $navItems = [
+                [
+                    'route' => 'admin.dashboard',
+                    'icon' => asset('assets/img/home.png'),
+                    'title' => 'Dashboard',
+                    'isImage' => true,
+                ],
+                [
+                    'route' => 'admin.reports.index',
+                    'icon' => 'bi bi-graph-up-arrow',
+                    'title' => 'Relatorios',
+                    'isImage' => false,
+                ],
+                [
+                    'route' => 'admin.sales.index',
+                    'icon' => 'bi bi-receipt-cutoff',
+                    'title' => 'Conversions',
+                    'isImage' => false,
+                ],
+            ];
+        } elseif (isAuditor()) {
+            $navItems = [
+                [
+                    'route' => 'auditor.dashboard',
+                    'icon' => asset('assets/img/home.png'),
+                    'title' => 'Dashboard',
+                    'isImage' => true,
+                ],
+                [
+                    'route' => 'auditor.conversions',
+                    'icon' => 'bi bi-alarm',
+                    'title' => 'Minhas Auditorias',
+                    'isImage' => false,
+                ],
+            ];
+        } elseif (isSupervisor()) {
+            $navItems = [
+                [
+                    'route' => 'supervisor.dashboard',
+                    'icon' => asset('assets/img/home.png'),
+                    'title' => 'Dashboard',
+                    'isImage' => true,
+                ],
+                [
+                    'route' => 'supervisor.conversions',
+                    'icon' => 'bi bi-alarm',
+                    'title' => 'Conversoes',
+                    'isImage' => false,
+                ],
+                [
+                    'route' => 'supervisor.reports',
+                    'icon' => 'bi bi-graph-up-arrow',
+                    'title' => 'Relatorios',
+                    'isImage' => false,
+                ],
+            ];
+        } elseif (isUser()) {
+            $navItems = [
+                [
+                    'route' => 'user.dashboard',
+                    'icon' => asset('assets/img/home.png'),
+                    'title' => 'Dashboard',
+                    'isImage' => true,
+                ],
+                [
+                    'route' => 'user.conversions',
+                    'icon' => 'bi bi-alarm',
+                    'title' => 'Minhas Conversões',
+                    'isImage' => false,
+                ],
+            ];
+        } else {
+            $navItems = [
+                [
+                    'route' => 'dashboard',
+                    'icon' => asset('assets/img/home.png'),
+                    'title' => 'Dashboard',
+                    'isImage' => true,
+                ],
+            ];
+        }
+
+        return $navItems;
+    }
+}
